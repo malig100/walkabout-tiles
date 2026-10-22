@@ -1,0 +1,67 @@
+{
+ "row": 2966,
+ "col": 451,
+ "osmTimestamp": 1792000000,
+ "edges": [
+  {
+   "key": "1001-12000000002",
+   "wayId": 100,
+   "name": "Sankt Göransgatan",
+   "highway": "residential",
+   "nodeA": 1001,
+   "nodeB": 12000000002,
+   "latA": 59.33,
+   "lngA": 18.05,
+   "latB": 59.331,
+   "lngB": 18.05
+  },
+  {
+   "key": "1003-12000000002",
+   "wayId": 100,
+   "name": "Sankt Göransgatan",
+   "highway": "residential",
+   "nodeA": 12000000002,
+   "nodeB": 1003,
+   "latA": 59.331,
+   "lngA": 18.05,
+   "latB": 59.332,
+   "lngB": 18.051
+  },
+  {
+   "key": "1003-12000000004",
+   "wayId": 100,
+   "name": "Sankt Göransgatan",
+   "highway": "residential",
+   "nodeA": 1003,
+   "nodeB": 12000000004,
+   "latA": 59.332,
+   "lngA": 18.051,
+   "latB": 59.3399,
+   "lngB": 18.052
+  },
+  {
+   "key": "1007-12000000002",
+   "wayId": 50,
+   "name": null,
+   "highway": "footway",
+   "nodeA": 12000000002,
+   "nodeB": 1007,
+   "latA": 59.331,
+   "lngA": 18.05,
+   "latB": 59.331,
+   "lngB": 18.048
+  },
+  {
+   "key": "1008-12000000002",
+   "wayId": 200,
+   "name": null,
+   "highway": "service",
+   "nodeA": 12000000002,
+   "nodeB": 1008,
+   "latA": 59.331,
+   "lngA": 18.05,
+   "latB": 59.3305,
+   "lngB": 18.049
+  }
+ ]
+}

@@ -1,0 +1,19 @@
+{
+ "row": -1697,
+ "col": 460,
+ "osmTimestamp": 1792000000,
+ "edges": [
+  {
+   "key": "2001-2002",
+   "wayId": 500,
+   "name": "Long Street",
+   "highway": "tertiary",
+   "nodeA": 2001,
+   "nodeB": 2002,
+   "latA": -33.925,
+   "lngA": 18.424,
+   "latB": -33.926,
+   "lngB": 18.425
+  }
+ ]
+}

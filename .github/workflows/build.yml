@@ -1,0 +1,80 @@
+name: Build street tiles
+
+# Weekly: download the OSM extract, build the street tiles, check them and publish to GitHub Pages
+# at https://malig100.github.io/walkabout-tiles/v1/ (index.json + t/<row>/<col>.bin.gz).
+on:
+  schedule:
+    - cron: '17 3 * * 0' # Sundays 03:17 UTC
+  workflow_dispatch:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+env:
+  EXTRACT_URL: https://download.bbbike.org/osm/bbbike/Stockholm
+  EXTRACT: Stockholm.osm.pbf
+  REGION: stockholm:59.1,17.54,59.57,18.56
+  PUBLISHED_INDEX: https://malig100.github.io/walkabout-tiles/v1/index.json
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+      - name: Download extract
+        if: github.event_name != 'pull_request'
+        run: |
+          curl -fsSL --retry 3 -o "$EXTRACT" "$EXTRACT_URL/$EXTRACT"
+          curl -fsSL --retry 3 "$EXTRACT_URL/CHECKSUM.txt" | grep " $EXTRACT\$" > md5.txt
+          md5sum -c md5.txt
+          # The extract's own date: BBBike sets Last-Modified to the OSM data time.
+          modified=$(curl -fsSI "$EXTRACT_URL/$EXTRACT" | grep -i '^last-modified:' | cut -d' ' -f2- | tr -d '\r')
+          echo "OSM_TIMESTAMP=$(date -u -d "$modified" +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_ENV"
+
+      - name: Build tiles
+        if: github.event_name != 'pull_request'
+        run: node build.js "$EXTRACT" --out site --region "$REGION" --osm-timestamp "$OSM_TIMESTAMP"
+
+      - name: Compare with the published build
+        if: github.event_name != 'pull_request'
+        run: node check.js site/v1/index.json "$PUBLISHED_INDEX"
+
+      - name: Landing page
+        if: github.event_name != 'pull_request'
+        run: |
+          cat > site/index.html <<'HTML'
+          <!doctype html><meta charset="utf-8"><title>WalkAbout street tiles</title>
+          <p>Street tiles for the WalkAbout app. Data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap contributors</a>, ODbL.
+          <p><a href="v1/index.json">v1/index.json</a>
+          HTML
+
+      - uses: actions/upload-pages-artifact@v5
+        if: github.event_name != 'pull_request'
+        with:
+          path: site
+
+  deploy:
+    if: github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5

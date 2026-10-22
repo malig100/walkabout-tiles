@@ -1,0 +1,19 @@
+{
+ "row": 2575,
+ "col": -4,
+ "osmTimestamp": 1792000000,
+ "edges": [
+  {
+   "key": "3001-3002",
+   "wayId": 600,
+   "name": "Strand ✓ 東",
+   "highway": "pedestrian",
+   "nodeA": 3001,
+   "nodeB": 3002,
+   "latA": 51.5,
+   "lngA": -0.12,
+   "latB": 51.501,
+   "lngB": -0.121
+  }
+ ]
+}

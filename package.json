@@ -1,0 +1,11 @@
+{
+  "name": "street-tiles",
+  "private": true,
+  "description": "Builds WalkAbout street tiles from an OSM extract (notes/gatufiler-plan.md).",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "dependencies": {
+    "osm-pbf-parser": "2.3.0"
+  }
+}
